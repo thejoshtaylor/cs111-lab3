@@ -23,6 +23,8 @@ struct hash_table_v1 {
 	struct hash_table_entry entries[HASH_TABLE_CAPACITY];
 };
 
+pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+
 struct hash_table_v1 *hash_table_v1_create()
 {
 	struct hash_table_v1 *hash_table = calloc(1, sizeof(struct hash_table_v1));
@@ -72,9 +74,13 @@ void hash_table_v1_add_entry(struct hash_table_v1 *hash_table,
                              const char *key,
                              uint32_t value)
 {
+	pthread_mutex_lock(&mutex);
 	struct hash_table_entry *hash_table_entry = get_hash_table_entry(hash_table, key);
+	pthread_mutex_unlock(&mutex);
 	struct list_head *list_head = &hash_table_entry->list_head;
+	pthread_mutex_lock(&mutex);
 	struct list_entry *list_entry = get_list_entry(hash_table, key, list_head);
+	pthread_mutex_unlock(&mutex);
 
 	/* Update the value if it already exists */
 	if (list_entry != NULL) {
@@ -85,7 +91,9 @@ void hash_table_v1_add_entry(struct hash_table_v1 *hash_table,
 	list_entry = calloc(1, sizeof(struct list_entry));
 	list_entry->key = key;
 	list_entry->value = value;
+	pthread_mutex_lock(&mutex);
 	SLIST_INSERT_HEAD(list_head, list_entry, pointers);
+	pthread_mutex_unlock(&mutex);
 }
 
 uint32_t hash_table_v1_get_value(struct hash_table_v1 *hash_table,
