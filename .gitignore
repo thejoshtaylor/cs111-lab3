@@ -2,3 +2,6 @@
 *.o
 
 hash-table-tester
+
+# Python cache
+__pycache__/
