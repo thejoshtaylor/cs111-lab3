@@ -1,2 +1,4 @@
 # Output files
 *.o
+
+hash-table-tester
