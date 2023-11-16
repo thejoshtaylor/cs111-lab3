@@ -65,7 +65,12 @@ threads to finish when they're not accessing the same resources.
 
 ### Performance
 ```shell
-./hash_table_tester -t <num_threads> -s <num_elem_per_thread>
+./hash_table_tester -t 4 -s 50000
+...
+Hash table base: 113714 usec
+...
+Hash table v2: 37243 usec
+...
 ```
 
 Version 2 is much faster than the base implementation (depending on the number of threads used).
@@ -76,20 +81,15 @@ I executed the following implementation on my WSL (Windows Subsystem for Linux) 
 
 ```shell
 ./hash_table_tester -t 4 -s 50000
-...
-Hash table base: 113714 usec
-...
-Hash table v2: 37243 usec
-...
 ```
 
 My average output for 5 runs was (usec):
 
-| Test      | Results  |
-| --------- | -------- |
-| Base      | 117431.6 |
-| Version 1 | 374122.4 |
-| Version 2 |  39871.8 |
+| Test      | Results   |
+| --------- | --------- |
+| Base      | 117,431.6 |
+| Version 1 | 374,122.4 |
+| Version 2 |  39,871.8 |
 
 My average speedup was 2.95x.
 
@@ -100,11 +100,11 @@ When I upped the number of threads to 6, I got the following results:
 ```
 
 Average for 5 runs (usec):
-| Test      | Results   |
-| --------- | --------- |
-| Base      |  318352.8 |
-| Version 1 | 1129983.4 |
-| Version 2 |   93029.8 |
+| Test      | Results     |
+| --------- | ----------- |
+| Base      |   318,352.8 |
+| Version 1 | 1,129,983.4 |
+| Version 2 |    93,029.8 |
 
 Average speedup: 3.42x
 
