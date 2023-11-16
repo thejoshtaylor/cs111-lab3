@@ -85,10 +85,16 @@ void hash_table_v1_add_entry(struct hash_table_v1 *hash_table,
 	struct hash_table_entry *hash_table_entry = get_hash_table_entry(hash_table, key);
 	struct list_head *list_head = &hash_table_entry->list_head;
 	int err = pthread_mutex_lock(&mutex);
-	assert(err == 0);
+	if (err != 0)
+	{
+		exit(err);
+	}
 	struct list_entry *list_entry = get_list_entry(hash_table, key, list_head);
 	err = pthread_mutex_unlock(&mutex);
-	assert(err == 0);
+	if (err != 0)
+	{
+		exit(err);
+	}
 
 	/* Update the value if it already exists */
 	if (list_entry != NULL)
@@ -101,10 +107,16 @@ void hash_table_v1_add_entry(struct hash_table_v1 *hash_table,
 	list_entry->key = key;
 	list_entry->value = value;
 	err = pthread_mutex_lock(&mutex);
-	assert(err == 0);
+	if (err != 0)
+	{
+		exit(err);
+	}
 	SLIST_INSERT_HEAD(list_head, list_entry, pointers);
 	err = pthread_mutex_unlock(&mutex);
-	assert(err == 0);
+	if (err != 0)
+	{
+		exit(err);
+	}
 }
 
 uint32_t hash_table_v1_get_value(struct hash_table_v1 *hash_table,
@@ -132,5 +144,9 @@ void hash_table_v1_destroy(struct hash_table_v1 *hash_table)
 		}
 	}
 	free(hash_table);
-	pthread_mutex_destroy(&mutex);
+	int err = pthread_mutex_destroy(&mutex);
+	if (err != 0)
+	{
+		exit(err);
+	}
 }
