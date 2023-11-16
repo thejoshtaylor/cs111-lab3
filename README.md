@@ -16,7 +16,10 @@ make
 ```
 
 <num_threads> is the number of threads to run. 
+
 <num_elem_per_thread> is the number of elements each thread will add to the hash table.
+
+
 
 This will run the base test (single thread) and both versions of the multi-threaded test.
 It will output the time for each test and the number of missing elements from the hash table.
@@ -42,7 +45,12 @@ handles the linked list macro that adds to the linked list.
 
 ### Performance
 ```shell
-./hash_table_tester -t <num_threads> -s <num_elem_per_thread>
+./hash_table_tester -t 4 -s 50000
+...
+Hash table base: 113714 usec
+...
+Hash table v1: 486003 usec
+...
 ```
 Version 1 is slower than the base version despite being multi-threaded. Considering the limitation
 of only one mutex, this is expected. The mutex is used by all threads, so the threads are all
@@ -68,12 +76,20 @@ I executed the following implementation on my WSL (Windows Subsystem for Linux) 
 
 ```shell
 ./hash_table_tester -t 4 -s 50000
+...
+Hash table base: 113714 usec
+...
+Hash table v2: 37243 usec
+...
 ```
 
-My average output for 5 runs was:
-- Base:         117431.6 usec
-- Version 1:    374122.4 usec
-- Version 2:     39871.8 usec
+My average output for 5 runs was (usec):
+
+| Test      | Results  |
+| --------- | -------- |
+| Base      | 117431.6 |
+| Version 1 | 374122.4 |
+| Version 2 |  39871.8 |
 
 My average speedup was 2.95x.
 
@@ -83,10 +99,12 @@ When I upped the number of threads to 6, I got the following results:
 ./hash_table_tester -t 6 -s 50000
 ```
 
-Average for 5 runs:
-- Base:          318352.8 usec
-- Version 1:    1129983.4 usec
-- Version 2:      93029.8 usec
+Average for 5 runs (usec):
+| Test      | Results   |
+| --------- | --------- |
+| Base      |  318352.8 |
+| Version 1 | 1129983.4 |
+| Version 2 |   93029.8 |
 
 Average speedup: 3.42x
 
